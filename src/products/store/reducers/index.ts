@@ -17,3 +17,10 @@ export const getProductsState = createFeatureSelector<ProductsState>('products')
     }
   }
 };*/
+
+/*
+* ProductsState, reducers and getProductsState lies here because inside this reducers folder
+* what we actually going to do is have multiple reducers and all apart of this products feature
+* module which is why it is called feature selector. So we actually want to do is start to move
+* things with pizza state across to its own pizza.selectors file
+* */
