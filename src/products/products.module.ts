@@ -5,7 +5,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { StoreModule } from '@ngrx/store';
-import { reducers } from './store';
+import { EffectsModule } from '@ngrx/effects';
+import { reducers, effects } from './store';
 
 // components
 import * as fromComponents from './components';
@@ -40,7 +41,8 @@ export const ROUTES: Routes = [
     RouterModule.forChild(ROUTES),
     // allows us lazy loading everything from our store and bind itself to store object, attach itself to our
     // root store
-    StoreModule.forFeature('products', reducers)
+    StoreModule.forFeature('products', reducers),
+    EffectsModule.forFeature(effects)
 
   ],
   providers: [...fromServices.services],

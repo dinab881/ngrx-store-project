@@ -2,56 +2,15 @@ import {Pizza} from "../../models/pizza.model";
 import * as fromPizzas from '../actions/pizzas.action';
 
 export interface PizzaState{
-  data: Pizza[];
+ // data: Pizza[]; - this data structure is not going to scale or handle well in big app when we want to get things very fast
+  // using objects instead of array is much better approach
+  entities: {[id: number] : Pizza}
   loaded: boolean;
   loading: boolean;
 }
 
 export const  initialState: PizzaState = {
-  data: [
-    {
-      "name": "Seaside Surfin'",
-      "toppings": [
-        {
-          "id": 6,
-          "name": "mushroom"
-        },
-        {
-          "id": 7,
-          "name": "olive"
-        },
-        {
-          "id": 2,
-          "name": "bacon"
-        },
-        {
-          "id": 3,
-          "name": "basil"
-        },
-        {
-          "id": 1,
-          "name": "anchovy"
-        },
-        {
-          "id": 8,
-          "name": "onion"
-        },
-        {
-          "id": 11,
-          "name": "sweetcorn"
-        },
-        {
-          "id": 9,
-          "name": "pepper"
-        },
-        {
-          "id": 5,
-          "name": "mozzarella"
-        }
-      ],
-      "id": 2
-    }
-  ],
+  entities: {},
   loaded: false,
   loading: false
 };
@@ -70,10 +29,35 @@ export function reducer(
     }
 
     case fromPizzas.LOAD_PIZZAS_SUCCESS:{
+     /* [{ id: 1}, {id: 2}]
+
+     => =>
+      const pizza: any = {
+        1: {
+          id: 1,
+            name: 'Pizza',
+            toppings: []
+        }
+      }
+      const id = 1;
+      pizza[id]
+      */
+
+      const pizzas = action.payload;
+      const entities = pizzas.reduce(
+        (entities: {[id: number]: Pizza}, pizza: Pizza) => {
+          return {
+            ...entities,
+            [pizza.id]: pizza
+          };
+        }, {
+        ...state.entities
+      });
       return {
         ...state,
         loading: false,
-        loaded: true
+        loaded: true,
+        entities
       };
     }
 
@@ -88,7 +72,7 @@ export function reducer(
   }
   return state;
 }
-
+export const getPizzasEntities = (state: PizzaState) => state.entities;
 export const getPizzasLoading = (state: PizzaState) => state.loading;
 export const getPizzasLoaded = (state: PizzaState) => state.loaded;
-export const getPizzas = (state: PizzaState) => state.data;
+
