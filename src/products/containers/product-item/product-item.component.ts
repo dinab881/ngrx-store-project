@@ -34,13 +34,11 @@ export class ProductItemComponent implements OnInit {
 
   constructor(
     private pizzaService: PizzasService,
-    private toppingsService: ToppingsService,
-    private route: ActivatedRoute,
-    private router: Router
+    private toppingsService: ToppingsService
   ) {}
 
   ngOnInit() {
-    this.pizzaService.getPizzas().subscribe(pizzas => {
+    /*this.pizzaService.getPizzas().subscribe(pizzas => {
       const param = this.route.snapshot.params.id;
       let pizza;
       if (param === 'new') {
@@ -54,11 +52,11 @@ export class ProductItemComponent implements OnInit {
         console.log('OnInit productItem: toppings from service-------------------', toppings);
         this.onSelect(toppings.map(topping => topping.id));
       });
-    });
+    });*/
   }
 
   onSelect(event: number[]) {
-    let toppings;
+    /*let toppings;
     console.log('toppings', this.toppings );
     if (this.toppings && this.toppings.length) {
 
@@ -73,27 +71,27 @@ export class ProductItemComponent implements OnInit {
       console.log('no this.toppings', toppings );
     }
     console.log('toppings current',toppings);
-    this.visualise = { ...this.pizza, toppings };
+    this.visualise = { ...this.pizza, toppings };*/
   }
 
   onCreate(event: Pizza) {
-    this.pizzaService.createPizza(event).subscribe(pizza => {
+    /*this.pizzaService.createPizza(event).subscribe(pizza => {
       this.router.navigate([`/products/${pizza.id}`]);
-    });
+    });*/
   }
 
   onUpdate(event: Pizza) {
-    this.pizzaService.updatePizza(event).subscribe(() => {
+    /*this.pizzaService.updatePizza(event).subscribe(() => {
       this.router.navigate([`/products`]);
-    });
+    });*/
   }
 
   onRemove(event: Pizza) {
     const remove = window.confirm('Are you sure?');
     if (remove) {
-      this.pizzaService.removePizza(event).subscribe(() => {
+      /*this.pizzaService.removePizza(event).subscribe(() => {
         this.router.navigate([`/products`]);
-      });
+      });*/
     }
   }
 }
