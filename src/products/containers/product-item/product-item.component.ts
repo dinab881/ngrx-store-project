@@ -4,6 +4,7 @@ import * as fromStore from '../../store';
 import { Pizza } from '../../models/pizza.model';
 import { Topping } from '../../models/topping.model';
 import { Store } from "@ngrx/store";
+import { tap } from "rxjs/operators";
 // import { ToppingsService } from '../../services/toppings.service';
 // import { Router, ActivatedRoute } from '@angular/router';
 // import { PizzasService } from '../../services/pizzas.service';
@@ -21,7 +22,7 @@ import { Store } from "@ngrx/store";
         (update)="onUpdate($event)"
         (remove)="onRemove($event)">
         <pizza-display
-          [pizza]="visualise">
+          [pizza]="visualise$ | async">
         </pizza-display>
       </pizza-form>
     </div>
@@ -60,8 +61,19 @@ export class ProductItemComponent implements OnInit {
     // an action to make sure we protect this route so we could view
     // pizza if it exists. We see pizza info on first page load because in the previous view they do exists
     // in the store
-    this.pizza$ = this.store.select(fromStore.getSelectedPizza);
+    this.pizza$ = this.store.select(fromStore.getSelectedPizza).pipe(
+      tap((pizza: Pizza = null) => {
+        // products/1,  products/2 - uses Router state
+        // products/new - we use the same component if we create new pizza
+        // we want empty the state of visualized topping
+        const pizzaExists = !!(pizza && pizza.toppings);
+        // if we create a new pizza then we dispatch and clear the previous state
+        const toppings = pizzaExists ? pizza.toppings.map( topping => topping.id ) : [];
+        this.store.dispatch(new fromStore.VisualiseToppings(toppings));
+      })
+    );
     this.toppings$ = this.store.select(fromStore.getAllToppings);
+    this.visualise$ = this.store.select(fromStore.getPizzaVisualised);
     /*this.pizzaService.getPizzas().subscribe(pizzas => {
       const param = this.route.snapshot.params.id;
       let pizza;
@@ -80,7 +92,7 @@ export class ProductItemComponent implements OnInit {
   }
 
   onSelect(event: number[]) {
-    console.log('OnSelect:::', event);
+    //console.log('OnSelect:::', event);
 
     this.store.dispatch(new fromStore.VisualiseToppings(event));
     /*let toppings;
