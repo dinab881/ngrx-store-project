@@ -113,7 +113,6 @@ export class PizzaFormComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-
     if (this.pizza && this.pizza.id) {
       this.exists = true;
       this.form.patchValue(this.pizza);
@@ -124,7 +123,7 @@ export class PizzaFormComponent implements OnChanges {
         map(toppings => toppings.map((topping: Topping) => topping.id))
       )
       .subscribe(value => this.selected.emit(value));
-    console.log('*********ngOnchanges**********');
+    console.log('*********ngOnchanges**********', );
   }
 
   createPizza(form: FormGroup) {

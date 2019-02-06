@@ -29,6 +29,7 @@ const PIZZA_TOPPINGS_ACCESSOR = {
         {{ topping.name }}
       </div>
     </div>
+  
   `,
 })
 export class PizzaToppingsComponent implements ControlValueAccessor {
@@ -62,6 +63,9 @@ export class PizzaToppingsComponent implements ControlValueAccessor {
   }
 
   existsInToppings(topping: Topping) {
+    console.log('value', this.value);
+    console.log('topping', topping);
+    console.log('toppings', this.toppings);
     return this.value.some(val => val.id === topping.id);
   }
 }

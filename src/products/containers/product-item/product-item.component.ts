@@ -15,7 +15,7 @@ import { Store } from "@ngrx/store";
       class="product-item">
       <pizza-form
         [pizza]="pizza$ | async"
-        [toppings]="toppings"
+        [toppings]="toppings$ | async"
         (selected)="onSelect($event)"
         (create)="onCreate($event)"
         (update)="onUpdate($event)"
@@ -29,8 +29,13 @@ import { Store } from "@ngrx/store";
 })
 export class ProductItemComponent implements OnInit {
   pizza$: Observable<Pizza>;
-  visualise: Pizza;
-  toppings: Topping[];
+  // when we select topping pizza from returns array of ids
+  // we are going to keep that selected ids inside of our state tree
+  // in toppings state and then we are going to use selector
+  // that cleverly merges changes so we can visualize what toppings
+  // a user clicked here
+  visualise$: Observable<Pizza>;
+  toppings$: Observable<Topping[]>;
 
   constructor(
      private store: Store<fromStore.ProductsState>
@@ -40,7 +45,8 @@ export class ProductItemComponent implements OnInit {
 
   ngOnInit() {
     // when we go to pizza page we see that on first page load
-    // name of pizza is filled from pizzaId, but there are no toppings.
+    // name of pizza is filled from pizzaId, but there are no toppings
+    // (because they are got from DB).
     // When we refresh a page, the name disappears. this is because
     // there are no any guards, which protect this routes
     // and make sures that those pizza exists in a store before we are
@@ -55,6 +61,7 @@ export class ProductItemComponent implements OnInit {
     // pizza if it exists. We see pizza info on first page load because in the previous view they do exists
     // in the store
     this.pizza$ = this.store.select(fromStore.getSelectedPizza);
+    this.toppings$ = this.store.select(fromStore.getAllToppings);
     /*this.pizzaService.getPizzas().subscribe(pizzas => {
       const param = this.route.snapshot.params.id;
       let pizza;
@@ -73,6 +80,9 @@ export class ProductItemComponent implements OnInit {
   }
 
   onSelect(event: number[]) {
+    console.log('OnSelect:::', event);
+
+    this.store.dispatch(new fromStore.VisualiseToppings(event));
     /*let toppings;
     console.log('toppings', this.toppings );
     if (this.toppings && this.toppings.length) {
