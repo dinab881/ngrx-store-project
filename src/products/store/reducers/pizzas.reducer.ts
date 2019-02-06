@@ -61,12 +61,25 @@ export function reducer(
       };
     }
 
-    case fromPizzas.LOAD_PIZZAS_FAIL:{
+    case fromPizzas.LOAD_PIZZAS_FAIL: {
       return {
         ...state,
         loading: false,
         loaded: false
       };
+    }
+
+    case fromPizzas.CREATE_PIZZA_SUCCESS: {
+      const pizza = action.payload;
+      const entities = {
+        ...state.entities,
+        [pizza.id]: pizza
+      };
+      return {
+        ...state,
+        entities,
+
+      }
     }
 
   }

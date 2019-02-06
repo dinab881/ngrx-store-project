@@ -41,6 +41,28 @@ export class PizzasEffects{
          map(pizzas => new pizzaActions.LoadPizzasSuccess(pizzas)),
          catchError(error => of(new pizzaActions.LoadPizzasFail(error)))
        )
-     }))
+     }));
+
+   @Effect()
+   createPizza$ = this.actions$.
+     ofType(pizzaActions.CREATE_PIZZA)
+     .pipe(
+       // smth interesting here we have not actually at yes
+       // new feature - we can actually map over this
+       // we are mapping this because we are only interested in
+       // payload. So this observable of actions is listening to create
+       // CREATE_PIZZA and does that via the type. However we actually
+       // can get give that whole action as the next item in stream
+       map((action: pizzaActions.CreatePizza) => action.payload),
+       switchMap(pizza => {
+         return this.pizzaService.
+         createPizza(pizza)
+           .pipe(
+             map(pizza => new pizzaActions.CreatePizzaSuccess(pizza)),
+             catchError(error => of(new pizzaActions.CreatePizzaFail(error)))
+           );
+       })
+     )
+
 
 }

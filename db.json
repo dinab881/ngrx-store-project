@@ -202,6 +202,24 @@
       "name": "vbn",
       "toppings": [],
       "id": 7
+    },
+    {
+      "name": "Margarita",
+      "toppings": [
+        {
+          "id": 6,
+          "name": "mushroom"
+        },
+        {
+          "id": 10,
+          "name": "pepperoni"
+        },
+        {
+          "id": 9,
+          "name": "pepper"
+        }
+      ],
+      "id": 8
     }
   ]
 }
