@@ -28,13 +28,19 @@ export const getSelectedPizza = createSelector(
   // and this is the whole reason not just for performance reasons
   // that we get a bigger gain when it comes to using an entity
   // we don't have to iterate over collections, we do not have to map
-  // througth them to just simply update smth, we can referece an entity
+  // throught them to just simply update smth, we can referece an entity
   // by looking up its id directly. it is super fast
 
   // so the benefit is the router state tells us the id of the pizza we
   // are on
+
+  // selectors make it really nice really easy. I want to get used for them
+  // is absolutely fantastic in how we can actually compose state via different states around
+  // our app. So we are using getPizzasEntities (featureState) in our products module
+  // and here we are using route state (1,2 arguments). We are asking for the state of the router
+  // and then composing new state to be returned to our app based of this
   (entities, router): Pizza => {
-    return router.state && entities[router.state.params.pizzaId]
+    return router.state && entities[router.state.params.pizzaId];
   }
 );
 

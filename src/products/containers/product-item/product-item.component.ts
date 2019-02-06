@@ -1,12 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-
+import { Observable } from 'rxjs/Observable';
+import * as fromStore from '../../store';
 import { Pizza } from '../../models/pizza.model';
-import { PizzasService } from '../../services/pizzas.service';
-
 import { Topping } from '../../models/topping.model';
-import { ToppingsService } from '../../services/toppings.service';
-
+import { Store } from "@ngrx/store";
+// import { ToppingsService } from '../../services/toppings.service';
+// import { Router, ActivatedRoute } from '@angular/router';
+// import { PizzasService } from '../../services/pizzas.service';
 @Component({
   selector: 'product-item',
   styleUrls: ['product-item.component.scss'],
@@ -14,7 +14,7 @@ import { ToppingsService } from '../../services/toppings.service';
     <div 
       class="product-item">
       <pizza-form
-        [pizza]="pizza"
+        [pizza]="pizza$ | async"
         [toppings]="toppings"
         (selected)="onSelect($event)"
         (create)="onCreate($event)"
@@ -28,16 +28,33 @@ import { ToppingsService } from '../../services/toppings.service';
   `,
 })
 export class ProductItemComponent implements OnInit {
-  pizza: Pizza;
+  pizza$: Observable<Pizza>;
   visualise: Pizza;
   toppings: Topping[];
 
   constructor(
-    private pizzaService: PizzasService,
-    private toppingsService: ToppingsService
+     private store: Store<fromStore.ProductsState>
+    /*private pizzaService: PizzasService,
+    private toppingsService: ToppingsService*/
   ) {}
 
   ngOnInit() {
+    // when we go to pizza page we see that on first page load
+    // name of pizza is filled from pizzaId, but there are no toppings.
+    // When we refresh a page, the name disappears. this is because
+    // there are no any guards, which protect this routes
+    // and make sures that those pizza exists in a store before we are
+    // trying to access them. Later we will set up a route guard which will
+    // actually check whether pizza's entity do exists in a store
+
+    // You may remember early we looked at loaded and loading properties
+    // loaded property we set to true when our pizza being loaded
+    // That's how we will know when we use route guard in future
+    // whether smth has being loaded. Otherwise we are going to dispatch
+    // an action to make sure we protect this route so we could view
+    // pizza if it exists. We see pizza info on first page load because in the previous view they do exists
+    // in the store
+    this.pizza$ = this.store.select(fromStore.getSelectedPizza);
     /*this.pizzaService.getPizzas().subscribe(pizzas => {
       const param = this.route.snapshot.params.id;
       let pizza;
