@@ -29,6 +29,12 @@ export const CREATE_PIZZA_SUCCESS = '[Products] Create Pizza Success';
 
 export class CreatePizza implements Action {
   readonly type =  CREATE_PIZZA;
+  // here we do actually want a constructor we do not use
+  // a constructor when we are loading however we want to pass payload
+  // from our form to the server which I can then save and add unique id
+  // for us and then we can pass it back in success action
+
+  // that is what we going to be sending back through this create pizza action
   constructor(public payload: Pizza){}
 }
 export class CreatePizzaFail implements Action {
@@ -38,6 +44,7 @@ export class CreatePizzaFail implements Action {
 
 export class CreatePizzaSuccess implements Action {
   readonly type =  CREATE_PIZZA_SUCCESS;
+  // pass pizza back from server
   constructor(public payload: Pizza){}
 }
 

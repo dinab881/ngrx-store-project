@@ -43,11 +43,12 @@ export class PizzasEffects{
        )
      }));
 
+   // this effect is listening to CREATE_PIZZA effect
    @Effect()
    createPizza$ = this.actions$.
      ofType(pizzaActions.CREATE_PIZZA)
      .pipe(
-       // smth interesting here we have not actually at yes
+       // smth interesting here we have not actually looked at yes
        // new feature - we can actually map over this
        // we are mapping this because we are only interested in
        // payload. So this observable of actions is listening to create
