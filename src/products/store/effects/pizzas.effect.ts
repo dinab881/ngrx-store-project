@@ -63,7 +63,41 @@ export class PizzasEffects{
              catchError(error => of(new pizzaActions.CreatePizzaFail(error)))
            );
        })
-     )
+     );
+
+
+  @Effect()
+  updatePizza$ = this.actions$.
+  ofType(pizzaActions.UPDATE_PIZZA)
+    .pipe(
+      map((action: pizzaActions.UpdatePizza) => action.payload),
+      switchMap(pizza => {
+        return this.pizzaService.
+        updatePizza(pizza)
+          .pipe(
+            map(pizza => new pizzaActions.UpdatePizzaSuccess(pizza)),
+            catchError(error => of(new pizzaActions.UpdatePizzaFail(error)))
+          );
+      })
+    );
+
+  @Effect()
+  removePizza$ = this.actions$.
+  ofType(pizzaActions.REMOVE_PIZZA)
+    .pipe(
+      map((action: pizzaActions.RemovePizza) => action.payload),
+      switchMap(pizza => {
+        // returns an item that has been deleted
+        return this.pizzaService.
+        removePizza(pizza)
+          .pipe(
+            // we do not get enything back to the server but we know that
+            // pizza is still available in our scope
+            map(() => new pizzaActions.RemovePizzaSuccess(pizza)),
+            catchError(error => of(new pizzaActions.RemovePizzaFail(error)))
+          );
+      })
+    );
 
 
 }

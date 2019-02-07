@@ -29,6 +29,11 @@ import { tap } from "rxjs/operators";
   `,
 })
 export class ProductItemComponent implements OnInit {
+  // Container component receives its input via observable
+  // from the store so this initiating top-level data-flow
+  // If we want to Output in container component we use dispatch
+  // not Output. And Inputs via store.select and outputs via store.dispatch
+  // So you can change of thinking in this pattern, in this approach
   pizza$: Observable<Pizza>;
   // when we select topping pizza from returns array of ids
   // we are going to keep that selected ids inside of our state tree
@@ -121,6 +126,7 @@ export class ProductItemComponent implements OnInit {
   }
 
   onUpdate(event: Pizza) {
+    this.store.dispatch(new fromStore.UpdatePizza(event));
     /*this.pizzaService.updatePizza(event).subscribe(() => {
       this.router.navigate([`/products`]);
     });*/
@@ -129,6 +135,7 @@ export class ProductItemComponent implements OnInit {
   onRemove(event: Pizza) {
     const remove = window.confirm('Are you sure?');
     if (remove) {
+      this.store.dispatch(new fromStore.RemovePizza(event));
       /*this.pizzaService.removePizza(event).subscribe(() => {
         this.router.navigate([`/products`]);
       });*/

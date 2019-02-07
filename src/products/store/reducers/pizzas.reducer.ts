@@ -69,6 +69,7 @@ export function reducer(
       };
     }
 
+    case fromPizzas.UPDATE_PIZZA_SUCCESS:
     case fromPizzas.CREATE_PIZZA_SUCCESS: {
       const pizza = action.payload;
       const entities = {
@@ -81,6 +82,23 @@ export function reducer(
 
       }
     }
+
+    case fromPizzas.REMOVE_PIZZA_SUCCESS: {
+      const pizza = action.payload;
+      // we can use delete keyword, but it does not feel
+      // great in terms of keeping our code nice and immutable
+      //https://www.bram.us/2018/01/10/javascript-removing-a-property-from-an-object-immutably-by-destructuring-it/
+
+      // destructures pizza off the state.entities object, and collects all rest
+      // props into entities
+      const { [pizza.id]: removed, ...entities } = state.entities;
+
+      return {
+        ...state,
+        entities
+      }
+    }
+
 
   }
   return state;

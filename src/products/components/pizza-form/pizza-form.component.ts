@@ -89,6 +89,8 @@ import { Topping } from '../../models/topping.model';
 export class PizzaFormComponent implements OnChanges {
   exists = false;
 
+  // All of our child components (stateless or presentational components) receive data
+  // via Input
   @Input() pizza: Pizza;
   @Input() toppings: Topping[];
 
