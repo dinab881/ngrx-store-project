@@ -35,8 +35,12 @@ export class ProductsComponent implements OnInit {
   constructor(private store: Store<fromStore.ProductsState>) {}
 
   ngOnInit() {
+    // how to remove this to make sure when we click on a particular pizza
+    // it gives page refresh that we can then dispatch this action
+    // inside of route guard and then return true or false based on whether
+    // that action was then successful
     this.pizzas$ = this.store.select<any>(fromStore.getAllPizzas);
-    this.store.dispatch(new fromStore.LoadPizzas());
+    //this.store.dispatch(new fromStore.LoadPizzas());
     this.store.dispatch(new fromStore.LoadToppings());
   }
 }
