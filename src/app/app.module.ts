@@ -49,7 +49,7 @@ export const ROUTES: Routes = [
     // but we need actually supply a function which we call a custom serializer.
 
     StoreModule.forRoot(reducers, { metaReducers }),
-    EffectsModule.forRoot([effects),
+    EffectsModule.forRoot(effects),
     StoreRouterConnectingModule,
     environment.development ? StoreDevtoolsModule.instrument() : [],
   ],

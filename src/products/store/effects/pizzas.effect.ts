@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions} from '@ngrx/effects';
 import { Action } from "@ngrx/store";
-import * as pizzaActions from '../actions/pizzas.action';
-import * as fromServices from '../../services';
+
 import { switchMap, map, catchError } from "rxjs/operators";
 import { Observable, pipe } from "rxjs";
 import { of } from 'rxjs/observable/of';
 
+import * as fromRoot from '../../../app/store';
+import * as pizzaActions from '../actions/pizzas.action';
+import * as fromServices from '../../services';
 
 // all effects are class which contains a few properties which are happen to be observables
 // our observables get called via ngrx effects and kind of in a way act like a reducer
@@ -65,6 +67,16 @@ export class PizzasEffects{
        })
      );
 
+  @Effect()
+  createPizzaSuccess$ = this.actions$
+    .ofType(pizzaActions.CREATE_PIZZA_SUCCESS)
+    .pipe(
+      map((action: pizzaActions.CreatePizzaSuccess)  => action.payload),
+      map(pizza => {
+        return new fromRoot.Go({
+        path: ['/products', pizza.id]
+      })})
+    );
 
   @Effect()
   updatePizza$ = this.actions$.
@@ -97,6 +109,20 @@ export class PizzasEffects{
             catchError(error => of(new pizzaActions.RemovePizzaFail(error)))
           );
       })
+    );
+
+
+  @Effect()
+  handlePizzaSuccess$ = this.actions$
+    .ofType(
+      pizzaActions.UPDATE_PIZZA_SUCCESS,
+      pizzaActions.REMOVE_PIZZA_SUCCESS
+    )
+    .pipe(
+      map(pizza => {
+        return new fromRoot.Go({
+          path: ['/products']
+        })})
     );
 
 

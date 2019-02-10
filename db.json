@@ -136,6 +136,14 @@
         {
           "id": 10,
           "name": "pepperoni"
+        },
+        {
+          "id": 4,
+          "name": "chili"
+        },
+        {
+          "id": 8,
+          "name": "onion"
         }
       ],
       "id": 3

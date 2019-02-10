@@ -23,6 +23,8 @@ export class RouterEffects{
     .pipe(
       map((action: RouterActions.Go) => action.payload),
       tap(({path, query: queryParams, extras}) => {
+        // instead of injecting this across multiple components or potentially services
+        // or callbacks elsewhere in app everything is just handled in one place
         this.router.navigate(path, {queryParams, ...extras})
       })
     );
