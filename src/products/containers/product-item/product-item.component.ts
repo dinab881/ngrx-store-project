@@ -10,6 +10,7 @@ import { tap } from "rxjs/operators";
 // import { PizzasService } from '../../services/pizzas.service';
 @Component({
   selector: 'product-item',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['product-item.component.scss'],
   template: `
     <div 
